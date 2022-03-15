@@ -8,11 +8,12 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-
     return GeneralPage(
       title: 'Sign In',
       subtitle: 'Find your best ever meal',
@@ -77,19 +78,21 @@ class _SignInPageState extends State<SignInPage> {
             height: 45,
             margin: const EdgeInsets.only(top: 24),
             padding: const EdgeInsets.symmetric(horizontal: kDefaultMargin),
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(kMainColor),
-              ),
-              child: Text(
-                'Sign in',
-                style: GoogleFonts.poppins(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            child: isLoading
+                ? loadingIndicator
+                : ElevatedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(kMainColor),
+                    ),
+                    child: Text(
+                      'Sign in',
+                      style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
           ),
           Container(
             width: double.infinity,
@@ -97,22 +100,31 @@ class _SignInPageState extends State<SignInPage> {
             margin: const EdgeInsets.only(top: 24),
             padding: const EdgeInsets.symmetric(horizontal: kDefaultMargin),
             child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(kGreyColor),
-                    ),
-                    onPressed: () {
-                      Get.to(
-                        () => SignUpPage(),
-                      );
-                    },
-                    child: Text(
-                      'Create new Account',
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(kGreyColor),
+              ),
+              onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                await context
+                    .read()<UserCubit>()
+                    .signIn(emailController.text, passwordController.text);
+                UserState state = context.read<UserCubit>().state;
+                if (state is UserLoaded) {
+                  context.read<FoodCubit>().getFoods();
+                  context.read<TransactionCubit>().getTransactions();
+                  Get.to(() => MainPage());
+                }
+              },
+              child: Text(
+                'Create new Account',
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
         ],
       ),

@@ -18,4 +18,9 @@ TextStyle blackFontStyle3 = GoogleFonts.poppins().copyWith(
   color: Colors.black,
 );
 
+Widget loadingIndicator = SpinKitFadingCircle(
+  size: 45,
+  color: kMainColor,
+);
+
 const double kDefaultMargin = 24;

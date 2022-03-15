@@ -1,5 +1,7 @@
+import 'package:bbm_mobile/cubit/cubit.dart';
 import 'package:bbm_mobile/ui/pages/pages.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 void main() {
@@ -11,8 +13,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: MainPage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => UserCubit()),
+        BlocProvider(create: (_) => FoodCubit()),
+        BlocProvider(create: (_) => TransactionCubit()),
+      ],
+      child: GetMaterialApp(
+        home: SignInPage(),
+      ),
     );
   }
 }
