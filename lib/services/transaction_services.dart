@@ -8,13 +8,13 @@ class TransactionServices {
     return ApiReturnValue(value: mockTransactions);
   }
 
-  static Future<ApiReturnValue<Transaction>> submitTransaction(
-      Transaction transaction) async {
+  static Future<ApiReturnValue<Transaction>> submitTransaction(Transaction transaction) async {
     await Future.delayed(
       Duration(seconds: 2),
     );
-    return ApiReturnValue(
-        value:
-            transaction.copyWith(id: 123, status: TranscationStatus.pending));
+    // return ApiReturnValue(
+    //   message: 'Transaksi Gagal'
+    // );
+    return ApiReturnValue(value: transaction.copyWith(id: 123, status: TranscationStatus.pending));
   }
 }

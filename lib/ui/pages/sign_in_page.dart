@@ -81,7 +81,41 @@ class _SignInPageState extends State<SignInPage> {
             child: isLoading
                 ? loadingIndicator
                 : ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await context
+                          .read<UserCubit>()
+                          .signIn(emailController.text, passwordController.text);
+                      UserState state = context.read<UserCubit>().state;
+                      if (state is UserLoaded) {
+                        context.read<FoodCubit>().getFoods();
+                        context.read<TransactionCubit>().getTransactions();
+                        Get.to(() => MainPage());
+                      } else {
+                        Get.snackbar("title", "message",
+                            backgroundColor: "D9435E".toColor(),
+                            icon: Icon(
+                              MdiIcons.closeCircleOutline,
+                              color: Colors.white,
+                            ),
+                            titleText: Text(
+                              'Sign in failed',
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white, fontWeight: FontWeight.w600),
+                            ),
+                            messageText: Text(
+                              (state as UserLoadingFailed).message!,
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                              ),
+                            ));
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(kMainColor),
                     ),
@@ -103,20 +137,7 @@ class _SignInPageState extends State<SignInPage> {
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(kGreyColor),
               ),
-              onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                await context
-                    .read()<UserCubit>()
-                    .signIn(emailController.text, passwordController.text);
-                UserState state = context.read<UserCubit>().state;
-                if (state is UserLoaded) {
-                  context.read<FoodCubit>().getFoods();
-                  context.read<TransactionCubit>().getTransactions();
-                  Get.to(() => MainPage());
-                }
-              },
+              onPressed: () {},
               child: Text(
                 'Create new Account',
                 style: GoogleFonts.poppins(

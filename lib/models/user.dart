@@ -28,12 +28,11 @@ class User extends Equatable {
 }
 
 User mockUser = User(
-  id: 1,
-  name: 'Kalula Jane',
-  address: 'Jl Jenderal Sudirman',
-  houseNumber: '123',
-  city: 'Bandung',
-  phoneNumber: '08213123123',
-  email: 'kalula.jane@gmail.com',
-  picturePath: 'https://www.pngitem.com/pimgs/m/191-1912450_girl-women-face-freetoedit-beautiful-woman-png-hd.png'
-);
+    id: 1,
+    name: 'Kalula Jane',
+    address: 'Jl Jenderal Sudirman',
+    houseNumber: '123',
+    city: 'Bandung',
+    phoneNumber: '08213123123',
+    email: 'kalula.jane@gmail.com',
+    picturePath: 'https://cdn1.iconfinder.com/data/icons/user-pictures/100/female1-512.png');

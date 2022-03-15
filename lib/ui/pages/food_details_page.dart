@@ -2,9 +2,9 @@ part of 'pages.dart';
 
 class FoodDetailsPage extends StatefulWidget {
   final Function onBackButtonPressed;
-  final Transaction? transaction;
+  final Transaction transaction;
 
-  FoodDetailsPage({required this.onBackButtonPressed, this.transaction});
+  const FoodDetailsPage({required this.onBackButtonPressed, required this.transaction});
 
   @override
   State<FoodDetailsPage> createState() => _FoodDetailsPageState();
@@ -31,7 +31,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
               width: double.infinity,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(widget.transaction!.food.picturePath!),
+                      image: NetworkImage(widget.transaction.food.picturePath!),
                       fit: BoxFit.cover)),
             ),
           ),
@@ -84,14 +84,14 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                                 SizedBox(
                                   width: MediaQuery.of(context).size.width - 32 - 102,
                                   child: Text(
-                                    widget.transaction!.food.name,
+                                    widget.transaction.food.name,
                                     style: blackFontStyle2,
                                   ),
                                 ),
                                 SizedBox(
                                   height: 6,
                                 ),
-                                RatingStars(widget.transaction!.food.rate!)
+                                RatingStars(widget.transaction.food.rate!)
                               ],
                             ),
                             Row(
@@ -147,7 +147,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 14, 0, 16),
                           child: Text(
-                            widget.transaction!.food.description,
+                            widget.transaction.food.description,
                             style: greyFontStyle,
                           ),
                         ),
@@ -158,7 +158,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 4, 0, 41),
                           child: Text(
-                            widget.transaction!.food.ingredients!,
+                            widget.transaction.food.ingredients!,
                             style: greyFontStyle,
                           ),
                         ),
@@ -175,7 +175,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                                 Text(
                                   NumberFormat.currency(
                                           locale: 'id-Id', symbol: 'IDR ', decimalDigits: 0)
-                                      .format(quantity * widget.transaction!.food.price),
+                                      .format(quantity * widget.transaction.food.price),
                                   style: blackFontStyle2.copyWith(fontSize: 18),
                                 ),
                               ],
@@ -184,7 +184,16 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                               width: 163,
                               height: 45,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Get.to(
+                                    () => PaymentPage(
+                                      transaction: widget.transaction.copyWith(
+                                        quantity: quantity,
+                                        total: quantity * widget.transaction.food.price,
+                                      ),
+                                    ),
+                                  );
+                                },
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(kMainColor),
                                 ),

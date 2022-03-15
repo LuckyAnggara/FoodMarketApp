@@ -37,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       image: NetworkImage(
-                        'https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png',
+                        (context.read<UserCubit>().state as UserLoaded).user!.picturePath,
                       ),
                       fit: BoxFit.cover,
                     ),
@@ -49,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 margin: EdgeInsets.fromLTRB(kDefaultMargin, 16, kDefaultMargin, 6),
                 child: Center(
                   child: Text(
-                    mockUser.name,
+                    (context.read<UserCubit>().state as UserLoaded).user!.name,
                     style: blackFontStyle1,
                   ),
                 ),
@@ -59,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 margin: EdgeInsets.fromLTRB(kDefaultMargin, 0, kDefaultMargin, 6),
                 child: Center(
                   child: Text(
-                    mockUser.email,
+                    (context.read<UserCubit>().state as UserLoaded).user!.email,
                     style: greyFontStyle.copyWith(fontSize: 13),
                   ),
                 ),
