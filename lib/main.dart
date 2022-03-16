@@ -19,9 +19,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => FoodCubit()),
         BlocProvider(create: (_) => TransactionCubit()),
       ],
-      child: GetMaterialApp(
-        home: SignInPage(),
-      ),
+      child: GetMaterialApp(home: SignInPage()),
     );
   }
 }
